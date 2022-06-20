@@ -44,14 +44,19 @@ class LinkedList
   # end
 
   def at(index)
+    return nil unless index.between?(0, size)
     current_node = head
-    (index).times { current_node = current_node.next_node }
+    (index).times { current_node = current_node.next_node}
     current_node
   end
 
   def pop
-    tail.prev_node.next_node = nil
-    self.tail = prev_node
+    unless size == 0
+      tail.prev_node.next_node = nil unless tail.prev_node == nil
+      self.tail = tail.prev_node
+      self.head = nil if size == 1
+      @size -= 1
+    end
   end
 
   def contains?(value)
@@ -76,7 +81,8 @@ class LinkedList
 
   def to_s
     current_node = head
-    str = "#{current_node.value}"
+    return "-> nil" if current_node.nil?
+    str = "#{current_node.value} "
     until current_node.nil?
       str += "-> #{current_node.value} "
       current_node = current_node.next_node
